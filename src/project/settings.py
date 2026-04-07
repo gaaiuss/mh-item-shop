@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "product",
     "debug_toolbar",  # TODO(gaaiuss): Remove debug toolbar
 ]
 
