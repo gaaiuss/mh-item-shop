@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import CharField
 
 
 class Order(models.Model):
@@ -19,6 +18,9 @@ class Order(models.Model):
         ),
     )
 
+    def __str__(self) -> str:
+        return f"Order N. {self.pk}"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -29,4 +31,7 @@ class OrderItem(models.Model):
     price = models.FloatField()
     promo_price = models.FloatField()
     amount = models.PositiveIntegerField()
-    image = CharField()
+    image = models.CharField(max_length=2000)
+
+    def __str__(self) -> str:
+        return f"Item from {self.order}"
