@@ -24,6 +24,12 @@ class ProductAdmin(ProductModelAdmin):
     def __init__(self, model: type[Product], admin_site: admin.AdminSite) -> None:
         super().__init__(model, admin_site)
         self.inlines = [VariationInLine]
+        self.list_display = [
+            "name",
+            "short_description",
+            "get_fomatted_market_price",
+            "get_fomatted_promo_market_price",
+        ]
 
 
 @admin.register(Variation)
