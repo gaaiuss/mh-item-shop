@@ -2,11 +2,15 @@ from typing import Any
 
 from django.http import HttpResponse
 from django.views import View
+from django.views.generic import ListView
+
+from product.models import Product
 
 
-class ProductList(View):
-    def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("ProductList")
+class ProductList(ListView):
+    model = Product
+    template_name = "product/list.html"
+    context_object_name = "products"
 
 
 class ProductDetail(View):
