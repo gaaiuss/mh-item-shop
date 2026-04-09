@@ -6,11 +6,14 @@ from django.views.generic import ListView
 
 from product.models import Product
 
+PER_PAGE = 9
+
 
 class ProductList(ListView):
     model = Product
     template_name = "product/list.html"
     context_object_name = "products"
+    paginate_by = PER_PAGE
 
 
 class ProductDetail(View):

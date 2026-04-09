@@ -3,6 +3,7 @@ from typing import Any
 from django.db import models
 from django.utils.text import slugify
 
+from utils.formatter import format_price
 from utils.images import resize_image
 
 
@@ -21,12 +22,12 @@ class Product(models.Model):
     )
 
     def get_fomatted_market_price(self) -> str:
-        return f"{self.market_price}z"
+        return format_price(self.market_price)
 
     get_fomatted_market_price.short_description = "Price"  # type: ignore
 
     def get_fomatted_promo_market_price(self) -> str:
-        return f"{self.promo_market_price}z"
+        return format_price(self.promo_market_price)
 
     get_fomatted_promo_market_price.short_description = "Promo Price"  # type: ignore
 
