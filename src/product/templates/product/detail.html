@@ -46,7 +46,7 @@
                     <option 
                       data-preco="{{ variation.price | format_price }}" 
                       data-preco-promocional="{{ variation.promo_price | format_price }}" 
-                      value="45"
+                      value="{{ variation.pk }}"
                     >
                       {% if variation.name %}
                         {{ variation.name }}
