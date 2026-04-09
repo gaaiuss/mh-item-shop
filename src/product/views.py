@@ -2,7 +2,7 @@ from typing import Any
 
 from django.http import HttpResponse
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from product.models import Product
 
@@ -16,9 +16,11 @@ class ProductList(ListView):
     paginate_by = PER_PAGE
 
 
-class ProductDetail(View):
-    def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("ProductDetail")
+class ProductDetail(DetailView):
+    model = Product
+    template_name = "product/detail.html"
+    context_object_name = "product"
+    slug_url_kwarg = "slug"
 
 
 class AddToCart(View):
