@@ -1,17 +1,46 @@
+# type: ignore
 from typing import Any
 
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
 from django.views import View
 
+from user_profile.forms import ProfileForm, UserForm
 
-class CreateProfile(View):
+
+class BaseProfile(View):
+    template_name = "user_profile/create.html"
+
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: dict[str, Any]) -> None:  # noqa: ANN401
+        super().setup(request, *args, **kwargs)
+
+        if self.request.user.is_authenticated:
+            self.context = {
+                "userform": UserForm(
+                    data=self.request.POST or None,
+                    user=self.request.user,
+                    instance=self.request.user,
+                ),
+                "profileform": ProfileForm(data=self.request.POST or None),
+            }
+        else:
+            self.context = {
+                "userform": UserForm(data=self.request.POST or None),
+                "profileform": ProfileForm(data=self.request.POST or None),
+            }
+
+        self.renderize = render(self.request, self.template_name, self.context)
+
     def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("CreateProfile")
+        return self.renderize
 
 
-class UpdateProfile(View):
-    def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("UpdateProfile")
+class CreateProfile(BaseProfile):
+    def post(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
+        return self.renderize
+
+
+class UpdateProfile(BaseProfile): ...
 
 
 class Login(View):

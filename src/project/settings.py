@@ -31,7 +31,13 @@ INSTALLED_APPS = [
     "order",
     "user_profile",
     "debug_toolbar",  # TODO(gaaiuss): Remove debug toolbar
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

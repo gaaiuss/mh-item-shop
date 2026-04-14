@@ -2,7 +2,7 @@ from django.urls import path
 
 from user_profile.views import CreateProfile, Login, Logout, UpdateProfile
 
-app_name = "userprofile"
+app_name = "user_profile"
 
 urlpatterns = [
     path("", CreateProfile.as_view(), name="create"),
