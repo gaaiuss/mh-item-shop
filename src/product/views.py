@@ -2,7 +2,7 @@ from typing import Any
 
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -99,14 +99,34 @@ class AddToCart(View):
 
 class RemoveFromCart(View):
     def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("RemoveFromCart")
+        http_referer = self.request.META.get("HTTP_REFERER", reverse("product:list"))
+        variation_id = self.request.GET.get("vid")
+
+        if not variation_id:
+            return redirect(http_referer)
+
+        if not self.request.session.get("cart"):
+            return redirect(http_referer)
+
+        if variation_id not in self.request.session["cart"]:
+            return redirect(http_referer)
+
+        cart = self.request.session["cart"][variation_id]
+
+        messages.success(self.request, f"{cart['product_name']} removed from your cart")
+
+        del self.request.session["cart"][variation_id]
+        self.request.session.save()
+
+        return redirect(http_referer)
 
 
 class Cart(View):
     def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("Cart")
+        context = {"cart": self.request.session.get("cart", {})}
+        return render(self.request, "product/cart.html", context)
 
 
-class Finish(View):
+class OrderSummary(View):
     def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
-        return HttpResponse("Finish")
+        return HttpResponse("OrderSummary")

@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField()
     cpf = models.CharField(max_length=11, verbose_name="CPF")
     address = models.CharField()

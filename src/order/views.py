@@ -9,7 +9,7 @@ class Pay(View):
         return HttpResponse("Pay")
 
 
-class CloseOrder(View):
+class SaveOrder(View):
     def get(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:  # noqa: ANN401
         return HttpResponse("CloseOrder")
 
