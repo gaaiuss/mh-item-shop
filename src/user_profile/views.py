@@ -46,10 +46,23 @@ class BaseProfile(View):
 class CreateProfile(BaseProfile):
     def post(self, *args: Any, **kwargs: dict[str, Any]) -> HttpResponse:
         if not self.userform.is_valid() or not self.userform.is_valid():
-            print("INVALID")
             return self.renderize
 
-        print("VALID")
+        username = self.userform.cleaned_data.get("username")
+        password = self.userform.cleaned_data.get("password")
+        email = self.userform.cleaned_data.get("email")
+
+        if self.request.user.is_authenticated:
+            ...
+        else:
+            user = self.userform.save(commit=False)
+            user.set_password(password)
+            user.save()
+
+            profile = self.profileform.save(commit=False)
+            profile.user = user
+            profile.save()
+
         return self.renderize
 
 
